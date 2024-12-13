@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon src/server.ts | pino-pretty",
     "format": "prettier --config ./.prettierrc --write \"src/**/*.{ts,js}\""
   },
   "keywords": [],
@@ -17,7 +17,6 @@
     "http-status-codes": "^2.3.0",
     "pg": "^8.13.1",
     "pino": "^9.5.0",
-    "pino-pretty": "^13.0.0",
     "sequelize": "^6.37.5",
     "todo-list": "file:"
   },
@@ -25,8 +24,11 @@
     "@eslint/js": "^9.16.0",
     "@types/express": "^5.0.0",
     "@types/jasmine": "^5.1.5",
+    "@types/joi": "^17.2.2",
     "@types/node": "^22.10.2",
     "@types/pg": "^8.11.10",
+    "@types/pino": "^7.0.4",
+    "@types/pino-pretty": "^4.7.5",
     "@types/sequelize": "^4.28.20",
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
@@ -39,7 +41,9 @@
     "globals": "^15.13.0",
     "jasmine": "^5.5.0",
     "jasmine-spec-reporter": "^7.0.0",
+    "joi": "^17.13.3",
     "nodemon": "^3.1.7",
+    "pino-pretty": "^13.0.0",
     "prettier": "^3.4.2",
     "sequelize-cli": "^6.6.2",
     "supertest": "^7.0.0",
