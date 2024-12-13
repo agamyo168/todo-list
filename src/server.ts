@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import sequelize from './db/connect';
+import notFoundMiddleware from './middlewares/notfound.middleware';
 dotenv.config();
 const app = express();
 
@@ -9,7 +10,7 @@ app.use(express.json());
 
 // app.use("/api/v1/"); //
 //Route Not Found redirction
-
+app.use(notFoundMiddleware);
 //Error handling middleware
 
 const port = process.env.PORT || '3000';
