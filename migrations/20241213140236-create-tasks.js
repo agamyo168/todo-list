@@ -9,19 +9,24 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('tasks', {
-      id: Sequelize.INTEGER,
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
+    await queryInterface.createTable(
+      'tasks',
+      {
+        // id: Sequelize.INTEGER,
+        title: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        desc: {
+          type: Sequelize.STRING,
+        },
+        check: {
+          type: Sequelize.BOOLEAN,
+          defaultValue: false,
+        },
       },
-      desc: {
-        type: Sequelize.STRING,
-      },
-      check: {
-        type: Sequelize.BOOLEAN,
-      },
-    });
+      { timestamps: true }
+    );
   },
 
   async down(queryInterface) {
