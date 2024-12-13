@@ -28,7 +28,14 @@ export default [
       '@typescript-eslint': typescriptEslint,
       prettier,
     },
-    ignores: ['node_modules/', 'dist/', 'src/tests/'],
+    ignores: [
+      'node_modules/',
+      'dist/',
+      'src/tests/',
+      'migrations/',
+      'models/',
+      'config/',
+    ],
     languageOptions: {
       globals: {
         ...globals.node,
