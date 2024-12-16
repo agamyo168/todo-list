@@ -107,22 +107,72 @@ describe('Authentication route -->', () => {
 
 describe('Todos route -->', () => {
   const ROUTE = '/api/v1/todos';
+  const taskTest = {
+    id: 1,
+    title: 'Homework',
+    description: 'Chapter 1&2 Math',
+    check: true,
+  };
   describe(`POST ${ROUTE}`, () => {
     it(`When attempting to add a task but you don't have access token, should return ${StatusCodes.UNAUTHORIZED}`, async () => {
       const res = await request.post(`${ROUTE}/`);
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
     });
+    it(`When attempting to add a task but you didn't provide a valid task, should return ${StatusCodes.BAD_REQUEST}`, async () => {
+      const res = await request
+        .post(`${ROUTE}/`)
+        .auth(token, { type: 'bearer' })
+        .send({});
+      expect(res.status).toBe(StatusCodes.BAD_REQUEST);
+    });
+    it(`When adding a new task, should return ${StatusCodes.CREATED} and an object of type Task that was created.`, async () => {
+      const res = await request
+        .post(`${ROUTE}/`)
+        .send(taskTest)
+        .auth(token, { type: 'bearer' });
+      expect(res.status).toBe(StatusCodes.CREATED);
+      expect(res.body).toEqual(taskTest);
+    });
+  });
+  describe(`PUT ${ROUTE}/:taskId`, () => {
+    it(`When updating a task, should return ${StatusCodes.OK} and an object of type Task that was created.`, async () => {
+      const res = await request
+        .patch(`${ROUTE}/${taskTest.id}`)
+        .auth(token, { type: 'bearer' });
+      expect(res.status).toBe(StatusCodes.OK);
+      expect(res.body).toEqual(taskTest);
+    });
+    it(`When updating a task that doesn't exist, should return ${StatusCodes.NOT_FOUND}`, async () => {
+      const res = await request
+        .patch(`${ROUTE}/99`)
+        .auth(token, { type: 'bearer' });
+      expect(res.status).toBe(StatusCodes.NOT_FOUND);
+    });
   });
   describe(`GET ${ROUTE}`, () => {
-    it(`When attempting to get all tasks but you don't have access token, should return ${StatusCodes.UNAUTHORIZED}`, async () => {
+    it(`When attempting to get all user tasks but you don't have access token, should return ${StatusCodes.UNAUTHORIZED}`, async () => {
       const res = await request.get(`${ROUTE}/`);
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
     });
-    it(`When attempting to get all tasks as a signed in user with access token, should return all  ${StatusCodes.OK}`, async () => {
+    it(`When attempting to get all user tasks as a signed in user with access token, should return ${StatusCodes.OK} and an array of type Task[]`, async () => {
       const res = await request
         .get(`${ROUTE}/`)
         .auth(token, { type: 'bearer' });
       expect(res.status).toBe(StatusCodes.OK);
+      expect(res.body.tasks[0]).toEqual(taskTest);
+    });
+    it(`When getting a task by id, should return ${StatusCodes.OK} and an object of type Task`, async () => {
+      const res = await request
+        .get(`${ROUTE}/1`)
+        .auth(token, { type: 'bearer' });
+      expect(res.status).toBe(StatusCodes.OK);
+      expect(res.body).toEqual(taskTest);
+    });
+    it(`When getting a task by id but that task doesn't belong to the logged in user or there's no task with that id, should return ${StatusCodes.NOT_FOUND}`, async () => {
+      const res = await request
+        .get(`${ROUTE}/1`)
+        .auth(token, { type: 'bearer' });
+      expect(res.status).toBe(StatusCodes.NOT_FOUND);
     });
   });
 });
