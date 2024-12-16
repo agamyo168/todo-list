@@ -16,8 +16,8 @@ module.exports = {
       'users',
       [
         {
-          email: 'testuser@gmail.com',
-          password: '123456',
+          email: 'asdasd@gmail.com',
+          password: '12345',
         },
       ],
       {}

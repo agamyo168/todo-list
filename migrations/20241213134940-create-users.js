@@ -20,6 +20,7 @@ module.exports = {
         email: {
           type: Sequelize.STRING,
           allowNull: false,
+          unique: true,
           validate: {
             isEmail: {
               msg: 'Please provide a valid email',
@@ -40,7 +41,9 @@ module.exports = {
           allowNull: false,
         },
       },
-      { timestamps: true }
+      {
+        timestamps: true,
+      }
     );
   },
 

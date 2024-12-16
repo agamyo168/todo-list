@@ -1,5 +1,4 @@
 import pino from 'pino';
-import pretty from 'pino-pretty';
 import dayjs from 'dayjs';
 
 const logger = pino({
@@ -15,7 +14,4 @@ const logger = pino({
   },
   timestamp: () => `,"time":"${dayjs().format()}`,
 });
-if (pretty.PinoPretty()) {
-  console.log('Yes');
-}
 export default logger;

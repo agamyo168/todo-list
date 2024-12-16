@@ -30,6 +30,7 @@ export default [
     },
     ignores: [
       'node_modules/',
+      'spec/',
       'dist/',
       'src/tests/',
       'migrations/',
