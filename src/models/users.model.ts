@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import sequelize from '../utils/db/connect';
-import logger from '../utils/db/logger';
+import logger from '../utils/logger';
 dotenv.config();
 const {
   BCRYPT_SALT_ROUNDS: SALT,
@@ -22,12 +22,35 @@ export interface User extends Model {
 const Users = sequelize.define(
   'users',
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: {
+          msg: 'Please provide a valid email',
+        },
+      },
     },
     password: {
       type: DataTypes.STRING,
+      // allowNull: false,
+      validate: {},
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+
     compare: {
       type: DataTypes.VIRTUAL,
       get() {
@@ -51,6 +74,8 @@ const Users = sequelize.define(
     },
   },
   {
+    timestamps: true,
+
     hooks: {
       async beforeCreate(user: User) {
         try {

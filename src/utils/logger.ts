@@ -1,8 +1,8 @@
 import pino from 'pino';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
 const logger = pino({
-  level: 'info',
+  level: process.env.LEVEL || 'info',
   transport: {
     target: 'pino-pretty',
     options: {
@@ -12,6 +12,6 @@ const logger = pino({
   base: {
     pid: false,
   },
-  timestamp: () => `,"time":"${dayjs().format()}`,
+  // timestamp: () => `,"time":"${dayjs().format()}`,
 });
 export default logger;
