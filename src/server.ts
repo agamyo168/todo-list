@@ -2,12 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { StatusCodes } from 'http-status-codes';
 
-// import sequelize from './utils/db/connect';
+import sequelize from './utils/db/connect';
 import notFoundMiddleware from './middlewares/notfound.middleware';
 import routes from './routes/api/v1';
 import logger from './utils/logger';
 import Users from './models/users.model';
-import Tasks from './models/tasks.model';
+import Todos from './models/todos.model';
 dotenv.config();
 const app = express();
 
@@ -34,9 +34,9 @@ app.use(notFoundMiddleware);
 const port = process.env.PORT || '3000';
 const start = async () => {
   try {
-    // await sequelize.sync();
-    Users.hasMany(Tasks);
-    Tasks.belongsTo(Users); //Not necessary?
+    await sequelize.sync();
+    Users.hasMany(Todos);
+    Todos.belongsTo(Users); //Not necessary?
     logger.info('DB connected');
     app.listen(port, () => {
       logger.info(`App is running at http://localhost:${port}`);

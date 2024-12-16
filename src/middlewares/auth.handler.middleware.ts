@@ -16,7 +16,8 @@ const authHandlerMiddleware = (
     );
   const token = authHead.split(' ')[1];
   try {
-    jwt.verify(token, String(process.env.JWT_SECRET));
+    const payload = jwt.verify(token, String(process.env.JWT_SECRET));
+    res.locals.payload = payload;
     next();
   } catch (err) {
     logger.error(err);
