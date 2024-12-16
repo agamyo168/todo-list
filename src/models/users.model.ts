@@ -1,16 +1,23 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../utils/db/connect';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import sequelize from '../utils/db/connect';
 import logger from '../utils/db/logger';
 dotenv.config();
-const { BCRYPT_SALT_ROUNDS: SALT, BCRYPT_SECRET_PEPPER: PEPPER } = process.env;
+const {
+  BCRYPT_SALT_ROUNDS: SALT,
+  BCRYPT_SECRET_PEPPER: PEPPER,
+  JWT_SECRET: JWT,
+  JWT_EXPIRE: EXPIRE,
+} = process.env;
 
 export interface User extends Model {
   id: number;
   email: string;
   password: string;
   compare(password: string): Promise<boolean>;
+  signToken(): string;
 }
 const Users = sequelize.define(
   'users',
@@ -29,6 +36,16 @@ const Users = sequelize.define(
             password + PEPPER,
             this.getDataValue('password')
           );
+        };
+      },
+    },
+    signToken: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return () => {
+          return jwt.sign({ id: this.getDataValue('id') }, `${JWT}`, {
+            expiresIn: `${EXPIRE}`,
+          });
         };
       },
     },

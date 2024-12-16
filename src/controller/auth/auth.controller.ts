@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import jwt from 'jsonwebtoken';
+
 import Users, { User } from '../../models/users.model';
 
 import logger from '../../utils/db/logger';
@@ -15,9 +15,7 @@ const login = async (_req: Request, res: Response, next: NextFunction) => {
   //Authentication -> checks if password is correct
   if ((await user.compare(password)) == false) return next(res.status(401)); //Password is incorrect
   //Valid login should return a token.
-  const token = jwt.sign({ id: user.id }, `${process.env.JWT_SECRET}`, {
-    expiresIn: `${process.env.JWT_EXPIRE}`,
-  });
+  const token = user.signToken();
   res.status(StatusCodes.OK).json({
     success: true,
     token,
