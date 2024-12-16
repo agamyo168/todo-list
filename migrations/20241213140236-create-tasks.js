@@ -12,7 +12,18 @@ module.exports = {
     await queryInterface.createTable(
       'tasks',
       {
-        // id: Sequelize.INTEGER,
+        id: {
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        userId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'users',
+            key: 'id',
+          },
+        },
         title: {
           type: Sequelize.STRING,
           allowNull: false,

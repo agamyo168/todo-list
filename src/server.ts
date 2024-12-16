@@ -5,6 +5,8 @@ import notFoundMiddleware from './middlewares/notfound.middleware';
 import routes from './routes/api/v1';
 import { StatusCodes } from 'http-status-codes';
 import logger from './utils/db/logger';
+import Users from './models/users.model';
+import Tasks from './models/tasks.model';
 dotenv.config();
 const app = express();
 
@@ -30,6 +32,8 @@ app.use('/', (req, res) => {
 const start = async () => {
   try {
     await sequelize.sync();
+    Users.hasMany(Tasks);
+    Tasks.belongsTo(Users); //Not necessary?
     logger.info('DB connected');
     app.listen(port, () => {
       logger.info(`App is running at http://localhost:${port}`);
