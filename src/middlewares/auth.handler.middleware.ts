@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
-import logger from '../utils/db/logger';
+import logger from '../utils/logger';
 const authHandlerMiddleware = (
   _req: Request,
   res: Response,
@@ -16,9 +16,8 @@ const authHandlerMiddleware = (
     );
   const token = authHead.split(' ')[1];
   try {
-    const payload = jwt.verify(token, String(process.env.JWT_SECRET));
-    console.log(payload);
-    res.status(StatusCodes.OK).json({ success: true, payload });
+    jwt.verify(token, String(process.env.JWT_SECRET));
+    next();
   } catch (err) {
     logger.error(err);
     return next(
