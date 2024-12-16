@@ -1,8 +1,19 @@
 import express from 'express';
-import { getTask } from '../../../../controller/todo/todo.controller';
+import {
+  createTodo,
+  deleteTodoById,
+  getTodo,
+  getTodoById,
+  updateTodoById,
+} from '../../../../controller/todo/todo.controller';
 
 const todoRouter = express.Router();
 
-todoRouter.route('/').get(getTask);
+todoRouter.route('/').get(getTodo).post(createTodo);
+todoRouter
+  .route('/:todoId')
+  .get(getTodoById)
+  .put(updateTodoById)
+  .delete(deleteTodoById);
 
 export default todoRouter;
