@@ -31,7 +31,8 @@ const getTodo = async (
   res: Response
   //  next: NextFunction
 ) => {
-  const todo = await Todo.findAll();
+  const { id: userId } = res.locals.payload;
+  const todo = await Todo.findAll({ where: { userId: userId } });
   res.status(StatusCodes.OK).json({ success: true, todo });
 };
 
