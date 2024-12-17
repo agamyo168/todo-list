@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Todos from '../../models/todos.model';
 import logger from '../../utils/logger';
+import NotFound from '../../middlewares/error/custom/notfound.error.class';
 
 const createTodo = async (req: Request, res: Response, next: NextFunction) => {
   const { title, desc, check } = req.body;
   const { id: userId } = res.locals.payload;
-  //Validation Here -> Check title should be a string and is required, check has to be boolean default is false, and desc is string default ''
   try {
     const todo = await Todos.create({
       userId,
@@ -17,7 +17,7 @@ const createTodo = async (req: Request, res: Response, next: NextFunction) => {
     res.status(StatusCodes.CREATED).json({ success: true, todo });
   } catch (err) {
     logger.error(err);
-    next(res.status(StatusCodes.BAD_REQUEST).json({ success: false }));
+    next(new Error(`${err}`));
   }
 };
 
@@ -28,7 +28,7 @@ const getTodo = async (req: Request, res: Response, next: NextFunction) => {
     res.status(StatusCodes.OK).json({ success: true, todo });
   } catch (err) {
     logger.error(err);
-    next(res.status(StatusCodes.BAD_REQUEST).json({ success: false }));
+    next(new Error(`${err}`));
   }
 };
 
@@ -37,16 +37,11 @@ const getTodoById = async (req: Request, res: Response, next: NextFunction) => {
   const { todoId } = req.params;
   try {
     const todo = await Todos.findOne({ where: { userId: userId, id: todoId } });
-    if (todo == null)
-      return next(
-        res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ success: false, msg: 'No such todo' })
-      );
+    if (todo == null) return next(new NotFound(`No such todo`));
     res.status(StatusCodes.OK).json({ success: true, todo });
   } catch (error) {
     logger.error(error);
-    next(res.status(StatusCodes.BAD_REQUEST).json({ success: false }));
+    next(new Error(`${error}`));
   }
 };
 const updateTodoById = async (
@@ -64,16 +59,12 @@ const updateTodoById = async (
     });
     if (todo[0] == 0) {
       // logger.error('No such todo');
-      return next(
-        res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ success: false, msg: "There's no such todo" })
-      );
+      return next(new NotFound(`No such todo`));
     }
     res.status(StatusCodes.OK).json({ success: true, todo: todo[1][0] });
   } catch (error) {
     logger.error(error);
-    next(res.status(StatusCodes.BAD_REQUEST).json({ success: false }));
+    next(new Error(`${error}`));
   }
 };
 const deleteTodoById = async (
@@ -85,16 +76,11 @@ const deleteTodoById = async (
   const { todoId } = req.params;
   try {
     const todo = await Todos.destroy({ where: { userId: userId, id: todoId } });
-    if (todo == 0)
-      return next(
-        res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ success: false, msg: 'No such todo' })
-      );
+    if (todo == 0) return next(new NotFound(`No such todo`));
     res.status(StatusCodes.OK).json({ success: true, todo });
   } catch (error) {
     logger.error(error);
-    next(res.status(StatusCodes.BAD_REQUEST).json({ success: false }));
+    next(new Error(`${error}`));
   }
 };
 export { getTodo, createTodo, getTodoById, updateTodoById, deleteTodoById };

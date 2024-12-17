@@ -9,6 +9,6 @@ const patchTodoSchema: ObjectSchema = Joi.object({
   title: Joi.string(),
   desc: Joi.string(),
   check: Joi.boolean(),
-}).xor('title', 'desc', 'check');
+}).or('title', 'desc', 'check');
 
 export { createTodoSchema, patchTodoSchema };

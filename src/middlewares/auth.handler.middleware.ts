@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
+import { UnauthorizedError } from './error';
+
 const authHandlerMiddleware = (
   _req: Request,
   res: Response,
@@ -9,11 +10,8 @@ const authHandlerMiddleware = (
 ) => {
   const authHead = _req.headers.authorization;
   if (authHead == null || authHead.startsWith('Bearer') == false)
-    return next(
-      res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ success: false, msg: 'Invalid user token' })
-    );
+    return next(new UnauthorizedError(`invalid user token`));
+
   const token = authHead.split(' ')[1];
   try {
     const payload = jwt.verify(token, String(process.env.JWT_SECRET));
@@ -21,9 +19,7 @@ const authHandlerMiddleware = (
     next();
   } catch (err) {
     logger.error(err);
-    return next(
-      res.status(StatusCodes.OK).json({ success: false, msg: `${err}` })
-    );
+    return next(new UnauthorizedError(`invalid user token`));
   }
 };
 

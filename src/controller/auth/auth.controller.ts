@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import Users, { User } from '../../models/users.model';
 
 import logger from '../../utils/logger';
+import { BadRequestError } from '../../middlewares/error';
 
 const login = async (_req: Request, res: Response, next: NextFunction) => {
   const { email, password } = _req.body;
@@ -11,9 +12,10 @@ const login = async (_req: Request, res: Response, next: NextFunction) => {
   // Assume Valid User Input
   //Authentication -> checks if email exists
   const user = (await Users.findOne({ where: { email } })) as User | null;
-  if (user == null) return next(res.status(StatusCodes.BAD_REQUEST)); //Email doesn't exist
+  if (user == null) return next(new BadRequestError(`Email doesn't exist`)); //Email doesn't exist
   //Authentication -> checks if password is correct
-  if ((await user.compare(password)) == false) return next(res.status(401)); //Password is incorrect
+  if ((await user.compare(password)) == false)
+    return next(new BadRequestError(`Incorrect password`)); //Password is incorrect
   //Valid login should return a token.
   const token = user.signToken();
   res.status(StatusCodes.OK).json({
@@ -22,7 +24,7 @@ const login = async (_req: Request, res: Response, next: NextFunction) => {
     user,
   });
 };
-const signup = async (_req: Request, res: Response) => {
+const signup = async (_req: Request, res: Response, next: NextFunction) => {
   const { email, password } = _req.body;
   // Assume Valid User Input
   //BCrypt
@@ -39,9 +41,7 @@ const signup = async (_req: Request, res: Response) => {
     });
   } catch (err) {
     logger.error(`${err}`);
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ success: false, msg: 'Failed to create a user' });
+    return next(new BadRequestError(`This email already exists`));
   }
 };
 
