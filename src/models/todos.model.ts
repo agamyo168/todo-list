@@ -1,7 +1,13 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import sequelize from '../utils/db/connect';
-
-const Todo = sequelize.define(
+export interface Todo extends Model {
+  id: number;
+  userId: number;
+  title: string;
+  desc: string;
+  check: boolean;
+}
+const Todos = sequelize.define(
   'todos',
   {
     id: {
@@ -31,4 +37,4 @@ const Todo = sequelize.define(
   { timestamps: true }
 );
 
-export default Todo;
+export default Todos;
