@@ -16,8 +16,11 @@ module.exports = {
       'users',
       [
         {
-          email: 'asdasd@gmail.com',
-          password: '12345',
+          id: 1,
+          email: 'seeder@gmail.com',
+          password: '123456789',
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}

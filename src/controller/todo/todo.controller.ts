@@ -22,9 +22,18 @@ const createTodo = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getTodo = async (req: Request, res: Response, next: NextFunction) => {
+  //pagination:
+  const { page = 1 } = req.query;
+  const limit = 10;
+  const offset = limit * (Number(page) - 1);
   const { id: userId } = res.locals.payload;
   try {
-    const todo = await Todos.findAll({ where: { userId: userId } });
+    const todo = await Todos.findAll({
+      where: { userId: userId },
+      order: [['createdAt', 'DESC']],
+      limit: limit,
+      offset: offset,
+    });
     res.status(StatusCodes.OK).json({ success: true, todo });
   } catch (err) {
     logger.error(err);
