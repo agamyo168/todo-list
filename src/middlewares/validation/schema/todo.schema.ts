@@ -10,5 +10,8 @@ const patchTodoSchema: ObjectSchema = Joi.object({
   desc: Joi.string(),
   check: Joi.boolean(),
 }).or('title', 'desc', 'check');
+const getTodoSchema: ObjectSchema = Joi.object({
+  page: Joi.number(),
+});
 
-export { createTodoSchema, patchTodoSchema };
+export { createTodoSchema, patchTodoSchema, getTodoSchema };

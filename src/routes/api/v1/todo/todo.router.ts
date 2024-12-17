@@ -9,19 +9,24 @@ import {
 import {
   createTodoSchema,
   patchTodoSchema,
-  validateMiddleware,
+  validateBodyMiddleware,
+  validateQueryMiddleware,
 } from '../../../../middlewares/validation';
+import { getTodoSchema } from '../../../../middlewares/validation/schema/todo.schema';
 
 const todoRouter = express.Router();
 
 todoRouter
   .route('/')
-  .get(getTodo)
-  .post(validateMiddleware(createTodoSchema) as RequestHandler, createTodo);
+  .get(validateQueryMiddleware(getTodoSchema) as RequestHandler, getTodo)
+  .post(validateBodyMiddleware(createTodoSchema) as RequestHandler, createTodo);
 todoRouter
   .route('/:todoId')
   .get(getTodoById)
-  .patch(validateMiddleware(patchTodoSchema) as RequestHandler, updateTodoById)
+  .patch(
+    validateBodyMiddleware(patchTodoSchema) as RequestHandler,
+    updateTodoById
+  )
   .delete(deleteTodoById);
 
 export default todoRouter;

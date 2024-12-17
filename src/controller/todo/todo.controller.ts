@@ -30,7 +30,6 @@ const getTodo = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const todo = await Todos.findAll({
       where: { userId: userId },
-      order: [['createdAt', 'DESC']],
       limit: limit,
       offset: offset,
     });

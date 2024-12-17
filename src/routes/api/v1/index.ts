@@ -5,14 +5,14 @@ import todoRouter from './todo/todo.router';
 import authHandlerMiddleware from '../../../middlewares/auth.handler.middleware';
 import {
   userSchema,
-  validateMiddleware,
+  validateBodyMiddleware,
 } from '../../../middlewares/validation';
 
 const router = express.Router();
 
 router.use(
   '/auth',
-  validateMiddleware(userSchema) as RequestHandler,
+  validateBodyMiddleware(userSchema) as RequestHandler,
   authRoute
 );
 router.use(

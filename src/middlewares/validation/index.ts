@@ -1,5 +1,14 @@
 import { createTodoSchema, patchTodoSchema } from './schema/todo.schema';
 import { userSchema } from './schema/user.schema';
-import { validateMiddleware } from './validate.middleware';
+import {
+  validateBodyMiddleware,
+  validateQueryMiddleware,
+} from './validate.middleware';
 
-export { createTodoSchema, patchTodoSchema, userSchema, validateMiddleware };
+export {
+  createTodoSchema,
+  patchTodoSchema,
+  userSchema,
+  validateBodyMiddleware,
+  validateQueryMiddleware,
+};
