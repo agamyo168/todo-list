@@ -1,4 +1,21 @@
 import Joi, { ObjectSchema } from 'joi';
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    Todo:
+ *      type: object
+ *      required:
+ *        - title
+ *      properties:
+ *         title:
+ *          type: string
+ *         description:
+ *           type: string
+ *         check:
+ *           type: boolean
+ *
+ */
 
 const createTodoSchema: ObjectSchema = Joi.object({
   title: Joi.string().required(),

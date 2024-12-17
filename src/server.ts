@@ -9,16 +9,30 @@ import logger from './utils/logger';
 import Users from './models/users.model';
 import Todos from './models/todos.model';
 import { errorHandlerMiddleware } from './middlewares/error';
+import swaggerDocs from './utils/swagger';
 dotenv.config();
 const app = express();
+const port = process.env.PORT || '3000';
+swaggerDocs(app, Number(port));
 
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 //Routes
 
-//Health check
+/**
+ * @openapi
+ * /healthcheck:
+ *  get:
+ *    tags:
+ *      - Healthcheck
+ *    description: Responds if the app is up and running
+ *    responses:
+ *      200:
+ *        description: App is up and running.
+ */
+
 app.get('/healthcheck', (req, res) => {
-  res.status(StatusCodes.ACCEPTED).json({
+  res.status(StatusCodes.OK).json({
     success: true,
     msg: 'Response',
   });
@@ -32,7 +46,6 @@ app.use(notFoundMiddleware);
 
 //Error handling middleware
 app.use(errorHandlerMiddleware);
-const port = process.env.PORT || '3000';
 const start = async () => {
   try {
     await sequelize.sync();

@@ -39,6 +39,33 @@ const getTodo = async (req: Request, res: Response, next: NextFunction) => {
     next(new Error(`${err}`));
   }
 };
+/**
+ * @openapi
+ * '/api/v1/todos/{todosId}':
+ *   get:
+ *     tags:
+ *       - Todos
+ *     summary: Get a single todos by id
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: todosId
+ *         in: path
+ *         description: the id of the todos
+ *         required: true
+ *     responses:
+ *        200:
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Todo'
+ *        404:
+ *          description: Todo not found
+ *        401:
+ *          description: Unauthorized User or invalid token
+ *
+ */
 
 const getTodoById = async (req: Request, res: Response, next: NextFunction) => {
   const { id: userId } = res.locals.payload;
