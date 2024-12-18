@@ -1,14 +1,14 @@
-import express from 'express';
 import dotenv from 'dotenv';
+import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import sequelize from './utils/db/connect';
-import notFoundMiddleware from './middlewares/notfound.middleware';
-import routes from './routes/api/v1';
-import logger from './utils/logger';
-import Users from './models/users.model';
-import Todos from './models/todos.model';
 import { errorHandlerMiddleware } from './middlewares/error';
+import notFoundMiddleware from './middlewares/notfound.middleware';
+import Todos from './models/todos.model';
+import Users from './models/users.model';
+import routes from './routes/api/v1';
+import sequelize from './utils/db/connect';
+import logger from './utils/logger';
 import swaggerDocs from './utils/swagger';
 dotenv.config();
 const app = express();

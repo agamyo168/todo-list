@@ -1,8 +1,8 @@
-import supertest from 'supertest';
-import app from '../server';
 import { StatusCodes } from 'http-status-codes';
-import Users from '../models/users.model';
+import supertest from 'supertest';
 import Todos from '../models/todos.model';
+import Users from '../models/users.model';
+import app from '../server';
 
 const request = supertest(app);
 let token = '';
@@ -34,7 +34,7 @@ describe('Authentication route -->', () => {
       expect(res.status).toBe(StatusCodes.CREATED);
       expect(res.body.email).toBe(user.email);
     });
-    it(`When given an already used email, should return ${StatusCodes.BAD_REQUEST}`, async () => {
+    it(`When given an already used email, should return ${StatusCodes.CONFLICT}`, async () => {
       //arrange
       const user = {
         email: 'test1@gmail.com',
@@ -43,7 +43,7 @@ describe('Authentication route -->', () => {
       //act
       const res = await request.post(`${ROUTE}/signup`).send(user);
       //assert
-      expect(res.status).toBe(StatusCodes.BAD_REQUEST);
+      expect(res.status).toBe(StatusCodes.CONFLICT);
     });
     it(`When given a password of short length, should return ${StatusCodes.BAD_REQUEST}`, async () => {
       //arrange

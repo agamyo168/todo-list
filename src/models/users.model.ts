@@ -1,7 +1,7 @@
-import { DataTypes, Model } from 'sequelize';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import { DataTypes, Model } from 'sequelize';
 import sequelize from '../utils/db/connect';
 import logger from '../utils/logger';
 dotenv.config();

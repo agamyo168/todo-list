@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/server.js",
     "test": "jasmine",
     "dev": "nodemon src/server.ts",
     "format": "prettier --config ./.prettierrc --write \"src/**/*.{ts,js}\"",
@@ -17,7 +18,7 @@
   "description": "",
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.13",
     "express": "^4.21.2",
     "http-status-codes": "^2.3.0",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.0",
     "@types/jasmine": "^5.1.5",
     "@types/joi": "^17.2.2",
