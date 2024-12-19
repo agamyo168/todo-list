@@ -2,7 +2,5 @@ FROM node:23-alpine
 
 WORKDIR /app
 
-COPY package.json .
-COPY package-lock.json .
+COPY . .
 RUN npm install
-COPY dist/ .

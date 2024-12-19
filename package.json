@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server.js",
+    "clean": "rm -rf dist/",
+    "build": "npm run clean && npx tsc",
+    "start": "npm run build && node dist/server.js",
     "test": "jasmine",
     "dev": "nodemon src/server.ts",
     "format": "prettier --config ./.prettierrc --write \"src/**/*.{ts,js}\"",
@@ -17,7 +19,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.13",
     "express": "^4.21.2",
