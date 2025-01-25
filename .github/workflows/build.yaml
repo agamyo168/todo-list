@@ -1,0 +1,25 @@
+#trigger action for certain event, branch, scheduler ... example: git push
+on: push
+
+# name of the pipeline
+name: Integration
+
+# steps that will be applied
+jobs:
+  # test: # name of this job is test
+  build: # name of this job is build
+    runs-on: ubuntu-latest # operating system that will run this job
+    steps: # commands to run in the shell of this pipeline
+      - uses: actions/checkout@v4 # uses: ready made actions/scripts to use immediately. checkout@v2 -> git clone
+      # - uses: agamyo168/gobuild@v2 #use my someone's defined action
+      # - run: echo ABC # run: write shell commands here.
+      - uses: actions/setup-node@v4 # This is a github action to install node
+      #   with:
+      #     node-version: '23.6.1'
+      #       cache: 'npm' # caches this version
+      - name: build # you can name your steps
+      # env: #environment variables
+      #   PORT: 3000
+        run: | # to write multi-line commands use |
+          npm install
+          npm run build
